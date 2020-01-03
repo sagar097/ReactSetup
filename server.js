@@ -11,6 +11,6 @@ app.post('/api/customers', (req, res) => {
   res.json(customers);
 });
 
-const port = 4701;
+const port = 4702;
 
 app.listen(port, () => `Server running on port ${port}`);

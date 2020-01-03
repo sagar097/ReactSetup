@@ -1,13 +1,24 @@
 import React from 'react';
 import './App.css';
+import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
+import { ConnectedRouter } from 'connected-react-router';
 import Customer from './components/Customer/Customers';
-function App() {
+import {Button} from '@material-ui/core'
+
+const theme = createMuiTheme({
+  palette: {
+      primary: { main: '#4194F2' }, // Purple and green play nicely together.
+      secondary: { main: '#6ABC6A' } // This is just green.A700 as hex.
+  }
+});
+
+function App(props) {
   return (
-    <div className="App">
-      <header className="App-header">
-        <Customer/>
-      </header>
-    </div>
+      <ConnectedRouter history={props.history}>
+                    <MuiThemeProvider theme={theme}>
+                             <Customer/>
+                    </MuiThemeProvider>
+      </ConnectedRouter>
   );
 }
 
