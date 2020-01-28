@@ -2,8 +2,8 @@ import React from 'react';
 import './App.css';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core/styles';
 import { ConnectedRouter } from 'connected-react-router';
-import Customer from './components/Customer/Customers';
-import {Button} from '@material-ui/core'
+import Routers from './routes/app.routes';
+import {BrowserRouter} from 'react-router-dom';
 
 const theme = createMuiTheme({
   palette: {
@@ -12,11 +12,13 @@ const theme = createMuiTheme({
   }
 });
 
-function App(props) {
+function App({history,store}) {
   return (
-      <ConnectedRouter history={props.history}>
+      <ConnectedRouter history={history}>
                     <MuiThemeProvider theme={theme}>
-                             <Customer/>
+                       <BrowserRouter>
+                             <Routers {...store} />
+                       </BrowserRouter>
                     </MuiThemeProvider>
       </ConnectedRouter>
   );

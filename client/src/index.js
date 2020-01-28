@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
 import * as serviceWorker from './serviceWorker';
+import App from './App';
 import createStore from './redux/store.config';
 import { Provider } from 'react-redux';
 // Create a store and get back itself and its history object
@@ -10,7 +10,7 @@ const { store, history } = createStore();
 
 ReactDOM.render(
     <Provider store={store} >
-        <App history={history}/>
+        <App history={history} store={store}/>
     </Provider>, document.getElementById('root')
 );
 
