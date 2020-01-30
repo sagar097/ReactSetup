@@ -19,7 +19,8 @@
     "react-scripts": "3.3.0",
     "redux": "^4.0.5",
     "redux-persist-transform-encrypt": "^2.0.1",
-    "redux-thunk": "^2.3.0"
+    "redux-thunk": "^2.3.0",
+    "validator": "^12.2.0"
   },
   "scripts": {
     "start": "PORT=3007 react-scripts start",
@@ -42,5 +43,5 @@
       "last 1 safari version"
     ]
   },
-  "proxy": "http://127.0.0.1:4702"
+  "proxy": "http://localhost:8000"
 }

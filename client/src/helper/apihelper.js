@@ -11,7 +11,7 @@ Object.defineProperty(APIHelper.prototype, 'Url', {
 Object.defineProperty(APIHelper.prototype, 'Resources', {
     get() {
         return {
-            Customer: this.Url + 'customers',
+            UserLogin: this.Url + 'user/login' ,
             
         };
     },
@@ -25,6 +25,18 @@ Object.defineProperty(APIHelper.prototype, 'Actions', {
             Create: 'Create',
             Update: 'Update',
             Delete: 'Delete'
+        };
+    },
+    readable: true
+});
+
+Object.defineProperty(APIHelper.prototype, 'Methods', {
+    get() {
+        return {
+            get: 'GET',
+            post: 'POST',
+            patch: 'PATCH',
+            Delete: 'DELETE'
         };
     },
     readable: true
@@ -51,17 +63,17 @@ Object.defineProperty(APIHelper.prototype, 'ServerAPI', {
 
 Object.defineProperty(APIHelper.prototype, 'getRequestOption', {
     get() {
-        return ( body, action, token, signal) => ({
-            method: 'POST',
+        return ( body, method, action, token,signal) => ({
+            method: method,
             mode: 'cors',
             headers: {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
                 Action: action,
-               // Authorization: token
+                 Authorization: token
             },
             body: JSON.stringify(body),
-          //  signal
+            signal
         });
     },
     readable: true

@@ -7,11 +7,11 @@ import Loader from '../helper/loaders';
 import React from 'react';
 //import ResetpasswordPage from '@/containers/Resetpassword';
 import { Switch } from 'react-router-dom';
-// import { auth } from '../utils/auth';
+import { auth } from '../utils/auth';
 import { dashboardLayout } from '../layouts/DashboardLayout';
 import { errorLayout } from '../layouts/ErrorLayout';
 import publicLayout from '../layouts/PublicLayout/PublicLayout';
-
+import {withRouter} from 'react-router';
 
 
 const NotFoundPage = Loader(() =>
@@ -47,20 +47,20 @@ const   Routers = store => {
         <div className='fi-grid fi-grid--hor fi-grid--root fi-grid--root-2'>
             <div className='fi-grid fi-grid--hor fi-grid--root fi-grid--root-3'>
                 <Switch>
-                    <AppRoute
-                        exact={true}
-                        path='/'
-                        component={  LoginPage }
-                        requireAuth={() => false}
-                        layout={publicLayout}
-                        type='public'
-                    />
+                        <AppRoute
+                            exact={true}
+                            path='/'
+                            component={LoginPage}
+                            requireAuth={auth}
+                            layout={publicLayout}
+                            type='public'
+                        />
                  
                         <AppRoute
                             exact={true}
                             path='/login'
                             component={LoginPage}
-                            requireAuth={() => false}
+                            requireAuth={auth}
                             layout={publicLayout}
                             store={store}
                             type='public'
@@ -71,7 +71,7 @@ const   Routers = store => {
                             exact={true}
                             path='/signup'
                             component={SignUp}
-                            requireAuth={() => false}
+                            requireAuth={auth}
                             layout={publicLayout}
                             type='public'
                         />
@@ -105,12 +105,11 @@ const   Routers = store => {
 
                       <AppRoute
                         exact
-                        path='/customer'
+                        path='/dashboard'
                         component={Customer}
-                        requireAuth={() => false}
+                        requireAuth={auth}
                         layout={dashboardLayout}
                         store={store}
-                        type='public'
                     />
 
                     <AppRoute
@@ -130,4 +129,4 @@ const   Routers = store => {
     );
 };
 
-export default Routers;
+export default withRouter(Routers);

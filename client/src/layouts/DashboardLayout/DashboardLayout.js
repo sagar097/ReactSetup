@@ -4,6 +4,8 @@ import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {Grid,List,Drawer,Toolbar,AppBar,CssBaseline,Typography,Divider,IconButton,ListItem,ListItemIcon,ListItemText} from '@material-ui/core';
 import {Menu as MenuIcon,ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,MoveToInbox as InboxIcon,Mail as MailIcon} from '@material-ui/icons';
 import UserProfile from '../../components/Header/Header';
+import {setStorage,getStorage} from '../../utils/jwtUtils';
+import { withRouter } from 'react-router';
 
 const drawerWidth = 240;
 
@@ -72,7 +74,7 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-export default function MiniDrawer(props) {
+function DashboardLayout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
@@ -83,6 +85,24 @@ export default function MiniDrawer(props) {
 
   const handleDrawerClose = () => {
     setOpen(false);
+  };
+  const handleLogout = () =>{
+    if(getStorage()){
+        setStorage()
+        props.history.push('/');
+    }else{
+      props.history.push('/')
+    }
+  }
+  const userProfileDetails = {
+    userName: `test user`,
+    email: '',
+    userRole: ``,
+    iconUrl: '',
+    onClick: function onClick(e) { },
+    visibility: {
+        editProfile: false
+    }
   };
 
   return (
@@ -114,7 +134,10 @@ export default function MiniDrawer(props) {
                 </Typography>
               </Grid>
              <Grid container justify="flex-end">
-               <UserProfile/>
+               <UserProfile    
+                  UserCard={userProfileDetails}
+                  onLogoutClick={()=>handleLogout()} 
+                />
             </Grid>
         </Toolbar>
       </AppBar>
@@ -153,3 +176,5 @@ export default function MiniDrawer(props) {
     </div>
   );
 }
+
+export default withRouter( DashboardLayout );

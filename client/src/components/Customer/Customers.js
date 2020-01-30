@@ -3,7 +3,7 @@ import './Customer.css';
 import { connect } from 'react-redux';
 import {getCustomerApi} from '../../redux/services/getCustomerApi';
 import { getAllUserDetail } from "../../redux/actions/customerDetailsAction";
-
+import {getToken} from '../../utils/jwtUtils';
 class Customers extends Component {
   constructor() {
     super();
@@ -13,9 +13,12 @@ class Customers extends Component {
   }
 
   componentDidMount() {
-    getCustomerApi().then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
-    this.props.getAllUserDetail();
-    
+    // getCustomerApi().then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
+    // this.props.getAllUserDetail();
+    const auth = store => {
+      return getToken() ;
+  };
+   console.log('did',auth());
   }
 
   render() {
@@ -24,9 +27,9 @@ class Customers extends Component {
       <div>
         <h2>Customers</h2>
         <ul>
-        {this.state.customers.map(customer => 
+        {/* {this.state.customers.map(customer => 
          ( <li key={customer.id}>{customer.firstName} {customer.lastName}</li>)
-        )}
+        )} */}
         </ul>
       </div>
     );

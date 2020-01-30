@@ -1,9 +1,9 @@
 import React from 'react';
-import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import { makeStyles } from '@material-ui/core/styles';
-import {Container,Checkbox,Avatar,CssBaseline,Button,TextField,FormControlLabel,Link,Grid,Box,Typography} from '@material-ui/core';
-import {LockOutlinedIcon as LockOutlined} from '@material-ui/icons';
+import {Container,Checkbox,Avatar,CssBaseline,Button,TextField,FormControlLabel,Grid,Box,Typography} from '@material-ui/core';
+import {LockOutlined as LockOutlinedIcon} from '@material-ui/icons';
 import Copyright from '../../components/Copyright/Copyright';
+import {Link} from 'react-router-dom';
 
 const useStyles = makeStyles(theme => ({
   paper: {
@@ -23,6 +23,15 @@ const useStyles = makeStyles(theme => ({
   submit: {
     margin: theme.spacing(3, 0, 2),
   },
+  Link:{
+    "&:hover":{
+        textDecoration:'none' ,
+    },
+      textDecoration:'none' ,
+      color:'#1976d2',
+      fontWeight:'500',
+      fontSize: '0.875rem',
+  }
 }));
 
 export default function SignUp() {
@@ -104,7 +113,7 @@ export default function SignUp() {
           </Button>
           <Grid container justify="flex-end">
             <Grid item>
-              <Link href="/" variant="body2">
+              <Link to="/" className={classes.Link}>
                 Already have an account? Sign in
               </Link>
             </Grid>
