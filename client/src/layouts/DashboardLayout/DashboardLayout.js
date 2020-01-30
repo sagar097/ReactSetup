@@ -7,6 +7,7 @@ import UserProfile from '../../components/Header/Header';
 import {setStorage,getStorage} from '../../utils/jwtUtils';
 import { withRouter } from 'react-router';
 import {items} from './menuList';
+import {Link} from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -72,6 +73,9 @@ const useStyles = makeStyles(theme => ({
   },
   profileButton:{
   //  paddingLeft:theme.spacing(42)
+  },
+  activeLink:{
+    backgroundColor:'#78a6da87'
   }
 }));
 
@@ -112,6 +116,7 @@ function DashboardLayout(props) {
         editProfile: false
     }
   };
+  const currentPath=props.history.location.pathname;
 
   return (
     <div className={classes.root}>
@@ -170,9 +175,10 @@ function DashboardLayout(props) {
         <Divider />
       
           {items.map((menu, index) => (
-            
-            <ListItem button key={menu.label} >
-              <ListItemIcon>{<menu.icon/> }</ListItemIcon>
+           
+
+            <ListItem button key={menu.label} className={currentPath==menu.to?classes.activeLink:''} >
+              <Link to={menu.to}><ListItemIcon>{<menu.icon/> }</ListItemIcon></Link>
               <ListItemText primary={menu.label} />
             </ListItem>
       
