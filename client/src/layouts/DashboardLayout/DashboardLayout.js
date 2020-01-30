@@ -1,4 +1,4 @@
-import React from 'react';
+import React,{useEffect,useState} from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import {Grid,List,Drawer,Toolbar,AppBar,CssBaseline,Typography,Divider,IconButton,ListItem,ListItemIcon,ListItemText} from '@material-ui/core';
@@ -6,6 +6,7 @@ import {Menu as MenuIcon,ChevronLeft as ChevronLeftIcon, ChevronRight as Chevron
 import UserProfile from '../../components/Header/Header';
 import {setStorage,getStorage} from '../../utils/jwtUtils';
 import { withRouter } from 'react-router';
+import {items} from './menuList';
 
 const drawerWidth = 240;
 
@@ -77,7 +78,13 @@ const useStyles = makeStyles(theme => ({
 function DashboardLayout(props) {
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(false);
+  const [open, setOpen] = useState(false);
+  
+  useEffect(()=>{
+     if(!getStorage()){
+       props.history.push('/');
+     }
+  },[props.history])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -86,6 +93,7 @@ function DashboardLayout(props) {
   const handleDrawerClose = () => {
     setOpen(false);
   };
+
   const handleLogout = () =>{
     if(getStorage()){
         setStorage()
@@ -160,14 +168,16 @@ function DashboardLayout(props) {
           </IconButton>
         </div>
         <Divider />
-        <List>
-          {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-              <ListItemText primary={text} />
+      
+          {items.map((menu, index) => (
+            
+            <ListItem button key={menu.label} >
+              <ListItemIcon>{<menu.icon/> }</ListItemIcon>
+              <ListItemText primary={menu.label} />
             </ListItem>
+      
           ))}
-        </List>
+        
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
