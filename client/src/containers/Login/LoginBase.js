@@ -1,4 +1,4 @@
-import React,{useState} from 'react';
+import React,{useState,memo} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Copyright from '../../components/Copyright/Copyright';
 import {LockOutlined as LockOutlinedIcon } from '@material-ui/icons';
@@ -50,7 +50,7 @@ const useStyles = makeStyles(theme => ({
 
 const emailRegex =/^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 
-export default function LoginBase(props) {
+function LoginBase(props) {
   const classes = useStyles();
 
   const [isLoggedIn, setLoggedIn] = useState(false);
@@ -165,7 +165,7 @@ export default function LoginBase(props) {
       }
     });
   };
-console.log(props)
+
   return (
         <div className={classes.paper}>
           <SnackBar
@@ -253,3 +253,5 @@ console.log(props)
         </div>
   );
 }
+
+export default memo(LoginBase);

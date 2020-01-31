@@ -11,8 +11,8 @@ Object.defineProperty(APIHelper.prototype, 'Url', {
 Object.defineProperty(APIHelper.prototype, 'Resources', {
     get() {
         return {
-            UserLogin: this.Url + 'user/login' ,
-            
+            UserLogin : this.Url + 'user/login' ,
+            SignUp : this.Url + 'user/signup'
         };
     },
     readable: true

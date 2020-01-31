@@ -12,14 +12,14 @@ class Customers extends Component {
     };
   }
 
-  componentDidMount() {
-    // getCustomerApi().then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
-    // this.props.getAllUserDetail();
-    const auth = store => {
-      return getToken() ;
-  };
-   console.log('did',auth());
-  }
+  // componentDidMount() {
+  //   // getCustomerApi().then(customers => this.setState({customers}, () => console.log('Customers fetched...', customers)));
+  //   // this.props.getAllUserDetail();
+  //   const auth = store => {
+  //     return getToken() ;
+  // };
+  //  console.log('did',auth());
+  // }
 
   render() {
     console.log("CustomerDetailsReducers",this.props.CustomerDetailsReducers)
