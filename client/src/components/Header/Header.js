@@ -32,9 +32,9 @@ function Header(props) {
 
     return (
         <div>
-            <IconButton aria-describedby={id} color="inherit" onClick={handleClick}>
-                <AccountCircle/>
-            </IconButton>
+            {/* <IconButton aria-describedby={id} color="inherit"  */}
+                <AccountCircle onClick={handleClick}/>
+            {/* </IconButton> */}
 
             <Popover
                 id={id}

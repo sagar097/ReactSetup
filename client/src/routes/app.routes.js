@@ -12,6 +12,7 @@ import { dashboardLayout } from '../layouts/DashboardLayout';
 import { errorLayout } from '../layouts/ErrorLayout';
 import publicLayout from '../layouts/PublicLayout/PublicLayout';
 import {withRouter} from 'react-router';
+import Demo from '../components/Demo';
 
 
 const NotFoundPage = Loader(() =>
@@ -111,7 +112,14 @@ const   Routers = store => {
                         layout={dashboardLayout}
                         store={store}
                     />
-
+                     <AppRoute
+                        exact
+                        path='/technology'
+                        component={Demo}
+                        requireAuth={auth}
+                        layout={dashboardLayout}
+                        store={store}
+                    />
                     <AppRoute
                         exact
                         path='*'

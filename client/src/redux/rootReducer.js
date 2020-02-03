@@ -1,11 +1,11 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
-import customerDetailsReducers from './reducers/customerDetailsReducers';
+import userDataReducer from './reducers/userProfileReducer';
 
 export default history => {
     const reducer = combineReducers({
         router: connectRouter(history),
-        CustomerDetailsReducers: customerDetailsReducers,
+        UserProfileData:userDataReducer
     });
 
     return (state, action) => {

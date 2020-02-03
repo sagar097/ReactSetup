@@ -1,13 +1,15 @@
-import React,{useEffect,useState} from 'react';
+import React, { useEffect,memo, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
-import {Grid,List,Drawer,Toolbar,AppBar,CssBaseline,Typography,Divider,IconButton,ListItem,ListItemIcon,ListItemText} from '@material-ui/core';
-import {Menu as MenuIcon,ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon,MoveToInbox as InboxIcon,Mail as MailIcon} from '@material-ui/icons';
+import { Grid,Tooltip, Drawer, Toolbar, AppBar, CssBaseline, Typography, Divider, IconButton, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
+import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, MoveToInbox as InboxIcon, Mail as MailIcon } from '@material-ui/icons';
 import UserProfile from '../../components/Header/Header';
-import {setStorage,getStorage} from '../../utils/jwtUtils';
+import { setStorage, getStorage } from '../../utils/jwtUtils';
+import { items } from './menuList';
+import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
+import {getAllUserDetail} from '../../redux/actions/userProfileAction';
 import { withRouter } from 'react-router';
-import {items} from './menuList';
-import {Link} from 'react-router-dom';
 
 const drawerWidth = 240;
 
@@ -17,7 +19,7 @@ const useStyles = makeStyles(theme => ({
   },
   appBar: {
     zIndex: theme.zIndex.drawer + 1,
-    backgroundColor:'#1976d2',
+    backgroundColor: '#1976d2',
     transition: theme.transitions.create(['width', 'margin'], {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -71,11 +73,11 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 1,
     padding: theme.spacing(3),
   },
-  profileButton:{
-  //  paddingLeft:theme.spacing(42)
+  profileButton: {
+    //  paddingLeft:theme.spacing(42)
   },
-  activeLink:{
-    backgroundColor:'#78a6da87'
+  activeLink: {
+    backgroundColor: '#78a6da87'
   }
 }));
 
@@ -83,12 +85,16 @@ function DashboardLayout(props) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = useState(false);
-  
-  useEffect(()=>{
-     if(!getStorage()){
-       props.history.push('/');
-     }
-  },[props.history])
+  const [state,setState] = useState({
+    selectedMenuIndex: 0,
+  });
+
+  useEffect(() => {
+    if (!getStorage()) {
+      props.history.push('/');
+    }
+    props.getAllUserDetail();
+  }, [props.history])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -98,26 +104,39 @@ function DashboardLayout(props) {
     setOpen(false);
   };
 
-  const handleLogout = () =>{
-    if(getStorage()){
-        setStorage()
-        props.history.push('/');
-    }else{
+  const handleLogout = () => {
+    if (getStorage()) {
+      setStorage()
+      props.history.push('/');
+    } else {
       props.history.push('/')
     }
   }
+
+  const onListItemClick=(event,index)=>{
+     setState({...state,
+      selectedMenuIndex:index
+    })
+  }
+
   const userProfileDetails = {
-    userName: `test user`,
-    email: '',
-    userRole: ``,
+    userName: props.UserProfileDataList ? props.UserProfileDataList.first_name +
+      ' ' +
+      props.UserProfileDataList.last_name
+      : '',
+    email: props.UserProfileDataList
+      ? props.UserProfileDataList.email
+      : '',
+    userRole: props.UserProfileDataList ? props.UserProfileDataList.role
+      : '',
     iconUrl: '',
     onClick: function onClick(e) { },
     visibility: {
-        editProfile: false
+      editProfile: false
     }
   };
-  const currentPath=props.history.location.pathname;
-
+  const currentPath = props.history.location.pathname;
+  console.log(currentPath)
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -128,30 +147,30 @@ function DashboardLayout(props) {
         })}
       >
         <Toolbar>
-            <Grid item xs={1}>
-                <IconButton
-                  color="inherit"
-                  aria-label="open drawer"
-                  onClick={handleDrawerOpen}
-                  edge="start"
-                  className={clsx(classes.menuButton, {
-                    [classes.hide]: open,
-                  })}
-                >
-                  <MenuIcon />
-                </IconButton>
-              </Grid>
-              <Grid item xs={7}>
-                <Typography variant="h6" noWrap>
-                  Quiz App
+          <Grid item xs={1}>
+            <IconButton
+              color="inherit"
+              aria-label="open drawer"
+              onClick={handleDrawerOpen}
+              edge="start"
+              className={clsx(classes.menuButton, {
+                [classes.hide]: open,
+              })}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Grid>
+          <Grid item xs={7}>
+            <Typography variant="h6" noWrap>
+              Quiz App
                 </Typography>
-              </Grid>
-             <Grid container justify="flex-end">
-               <UserProfile    
-                  UserCard={userProfileDetails}
-                  onLogoutClick={()=>handleLogout()} 
-                />
-            </Grid>
+          </Grid>
+          <Grid container justify="flex-end">
+            <UserProfile
+              UserCard={userProfileDetails}
+              onLogoutClick={() => handleLogout()}
+            />
+          </Grid>
         </Toolbar>
       </AppBar>
       <Drawer
@@ -173,24 +192,44 @@ function DashboardLayout(props) {
           </IconButton>
         </div>
         <Divider />
-      
-          {items.map((menu, index) => (
-           
 
-            <ListItem button key={menu.label} className={currentPath==menu.to?classes.activeLink:''} >
-              <Link to={menu.to}><ListItemIcon>{<menu.icon/> }</ListItemIcon></Link>
-              <ListItemText primary={menu.label} />
+        {items.map((menu,index) => (
+
+          <Tooltip title={menu.label} aria-label={menu.label} key={menu.label}>
+            <ListItem button 
+              key={menu.label} 
+              selected={state.selectedMenuIndex === index}
+              onClick={(event)=>{onListItemClick(event, index)}}
+            >
+              <Link to={menu.to}>
+               <ListItemIcon>{<menu.icon />}</ListItemIcon>  </Link>
+               <ListItemText primary={menu.label}  />
+             
             </ListItem>
-      
-          ))}
-        
+          </Tooltip>
+        ))}
+
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-         {props.children}    
+        {props.children}
       </main>
     </div>
   );
 }
 
-export default withRouter( DashboardLayout );
+const mapStateToProps = ({
+  UserProfileData
+}) => ({
+  UserProfileDataList: UserProfileData.UserDataList,
+});
+
+const mapDispatchToProps = {
+  getAllUserDetail,
+};
+
+export default withRouter( memo(connect(
+      mapStateToProps,
+      mapDispatchToProps
+    )(DashboardLayout)));
+

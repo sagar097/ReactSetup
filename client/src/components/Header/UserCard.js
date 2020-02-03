@@ -64,9 +64,9 @@ const UserCard = props => {
             )}
             <Divider style={{marginTop: '-8px'}}/>
             {/* <List component='nav' className='profile-logout-btn' > */}
-                <ListItemLink   onClick={event => props.onLogoutClick() }>
+              <ListItemLink   onClick={event => props.onLogoutClick() }>
                    <ExitToAppIcon/>  <ListItemText primary='Logout' /> 
-                </ListItemLink>
+              </ListItemLink> 
             {/* </List> */}
         </Grid>
     );

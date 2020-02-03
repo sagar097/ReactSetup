@@ -8,7 +8,7 @@ export const items = [
     },
     {
         icon: Group,
-        to: '/technology',
+         to: '/technology',
         label: 'Technology'
     },
 ]

@@ -12,7 +12,8 @@ Object.defineProperty(APIHelper.prototype, 'Resources', {
     get() {
         return {
             UserLogin : this.Url + 'user/login' ,
-            SignUp : this.Url + 'user/signup'
+            SignUp : this.Url + 'user/signup',
+            UserProfile: this.Url + 'user/userinfo'
         };
     },
     readable: true
@@ -70,7 +71,7 @@ Object.defineProperty(APIHelper.prototype, 'getRequestOption', {
                 'Content-Type': 'application/json',
                 Accept: 'application/json',
                 Action: action,
-                 Authorization: token
+                Authorization: token
             },
             body: JSON.stringify(body),
             signal
