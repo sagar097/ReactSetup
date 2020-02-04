@@ -2,7 +2,7 @@ import React, { useEffect,memo, useState } from 'react';
 import clsx from 'clsx';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
 import { Grid,Tooltip, Drawer, Toolbar, AppBar, CssBaseline, Typography, Divider, IconButton, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, MoveToInbox as InboxIcon, Mail as MailIcon } from '@material-ui/icons';
+import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from '@material-ui/icons';
 import UserProfile from '../../components/Header/Header';
 import { setStorage, getStorage } from '../../utils/jwtUtils';
 import { items } from './menuList';
@@ -94,7 +94,18 @@ function DashboardLayout(props) {
       props.history.push('/');
     }
     props.getAllUserDetail();
-  }, [props.history])
+   
+    if(props.location.state&&props.location.state.activeIndex)
+    {   
+      if(state.selectedMenuIndex!==props.location.state.activeIndex){
+        setState({
+          ...state,
+          selectedMenuIndex:props.location.state.activeIndex
+        })
+      }
+    }
+   
+  }, [])
 
   const handleDrawerOpen = () => {
     setOpen(true);
@@ -113,10 +124,11 @@ function DashboardLayout(props) {
     }
   }
 
-  const onListItemClick=(event,index)=>{
+  const onListItemClick=(event,index,path)=>{
      setState({...state,
       selectedMenuIndex:index
     })
+    // props.history.push(path)
   }
 
   const userProfileDetails = {
@@ -135,8 +147,7 @@ function DashboardLayout(props) {
       editProfile: false
     }
   };
-  const currentPath = props.history.location.pathname;
-  console.log(currentPath)
+console.log(props)
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -193,17 +204,24 @@ function DashboardLayout(props) {
         </div>
         <Divider />
 
-        {items.map((menu,index) => (
+        {items.map((menu) => (
 
           <Tooltip title={menu.label} aria-label={menu.label} key={menu.label}>
             <ListItem button 
               key={menu.label} 
-              selected={state.selectedMenuIndex === index}
-              onClick={(event)=>{onListItemClick(event, index)}}
+              selected={state.selectedMenuIndex === menu.id}
+              onClick={(event)=>{onListItemClick(event, menu.id,menu.to)}}
             >
-              <Link to={menu.to}>
-               <ListItemIcon>{<menu.icon />}</ListItemIcon>  </Link>
-               <ListItemText primary={menu.label}  />
+              <Link
+                to={{
+                  pathname: menu.to,
+                  state: { activeIndex: menu.id }
+                }}
+              >
+
+                <ListItemIcon>{<menu.icon />}</ListItemIcon>
+              </Link>
+              <ListItemText primary={menu.label}  />
              
             </ListItem>
           </Tooltip>

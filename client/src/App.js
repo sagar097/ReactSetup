@@ -13,6 +13,7 @@ const theme = createMuiTheme({
 });
 
 function App({history,store}) {
+  console.log("app",history)
   return (
       <ConnectedRouter history={history}>
                     <MuiThemeProvider theme={theme}>

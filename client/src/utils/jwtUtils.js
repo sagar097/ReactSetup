@@ -1,6 +1,6 @@
 const STORE_NAME = 'jwt_token';
 
-export const getToken = () => {debugger
+export const getToken = () => {
 
   let dataStorage = getStorage();
 
@@ -20,7 +20,7 @@ export const getStorage = () => {
   return;
 }
 
-export const setStorage = (data) => {debugger
+export const setStorage = (data) => {
 
   if (data) {
     try {

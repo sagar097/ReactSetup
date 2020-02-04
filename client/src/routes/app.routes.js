@@ -13,6 +13,7 @@ import { errorLayout } from '../layouts/ErrorLayout';
 import publicLayout from '../layouts/PublicLayout/PublicLayout';
 import {withRouter} from 'react-router';
 import Demo from '../components/Demo';
+import TechCard from '../components/TechCards/TechCard';
 
 
 const NotFoundPage = Loader(() =>
@@ -107,7 +108,7 @@ const   Routers = store => {
                       <AppRoute
                         exact
                         path='/dashboard'
-                        component={Customer}
+                        component={TechCard}
                         requireAuth={auth}
                         layout={dashboardLayout}
                         store={store}
@@ -115,7 +116,7 @@ const   Routers = store => {
                      <AppRoute
                         exact
                         path='/technology'
-                        component={Demo}
+                        component={Customer}
                         requireAuth={auth}
                         layout={dashboardLayout}
                         store={store}

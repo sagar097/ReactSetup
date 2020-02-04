@@ -10,10 +10,10 @@ class Customers extends Component {
 
 
   render() {
-    console.log("CustomerDetailsReducers",)
+
     return (
       <div>
-        <h2>Customers</h2>
+        <h2>Demo</h2>
         
       </div>
     );
