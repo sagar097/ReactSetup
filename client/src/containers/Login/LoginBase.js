@@ -68,7 +68,7 @@ function LoginBase(props) {
   })
        
 
-  const handleValidation =()=>{debugger
+  const handleValidation =()=>{
     let email = state.email;
     let password = state.password;
     let stateError = state.errors;
