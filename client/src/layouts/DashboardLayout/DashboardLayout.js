@@ -1,8 +1,8 @@
-import React, { useEffect,memo, useState } from 'react';
+import React, { Component } from 'react';
 import clsx from 'clsx';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { withStyles, useTheme } from '@material-ui/core/styles';
 import { Grid,Tooltip, Drawer, Toolbar, AppBar, CssBaseline, Typography, Divider, IconButton, ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
-import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon } from '@material-ui/icons';
+import { Menu as MenuIcon, ChevronLeft as ChevronLeftIcon, ChevronRight as ChevronRightIcon, FilterNone } from '@material-ui/icons';
 import UserProfile from '../../components/Header/Header';
 import { setStorage, getStorage } from '../../utils/jwtUtils';
 import { items } from './menuList';
@@ -13,7 +13,7 @@ import { withRouter } from 'react-router';
 
 const drawerWidth = 240;
 
-const useStyles = makeStyles(theme => ({
+const styles  = theme => ({
   root: {
     display: 'flex',
   },
@@ -78,68 +78,84 @@ const useStyles = makeStyles(theme => ({
   },
   activeLink: {
     backgroundColor: '#78a6da87'
+  },
+  menuName:{
+    textDecoration:'none',
+    color:'rgba(0, 0, 0, 0.87)'
   }
-}));
+});
 
-function DashboardLayout(props) {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [open, setOpen] = useState(false);
-  const [state,setState] = useState({
-    selectedMenuIndex: 0,
-  });
+class DashboardLayout extends Component {
+  constructor(props){
+    super(props);
+    this.state=({
+      open:false,
+      selectedMenuIndex: 0,
+    })
+  }
 
-  useEffect(() => {
+  componentDidMount(){
     if (!getStorage()) {
-      props.history.push('/');
+      this.props.history.push('/');
     }
-    props.getAllUserDetail();
-   
-    if(props.location.state&&props.location.state.activeIndex)
+    this.props.getAllUserDetail();
+  
+    if(this.props.location.state&&this.props.location.state.activeIndex)
     {   
-      if(state.selectedMenuIndex!==props.location.state.activeIndex){
-        setState({
-          ...state,
-          selectedMenuIndex:props.location.state.activeIndex
+      if(this.state.selectedMenuIndex!==this.props.location.state.activeIndex){
+        this.setState({
+          ...this.state,
+          selectedMenuIndex:this.props.location.state.activeIndex
         })
       }
     }
-   
-  }, [])
+ }
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
+handleDrawerOpen = () => {
+  this.setState({
+    ...this.state,
+      open:true
+    });
+};
 
-  const handleDrawerClose = () => {
-    setOpen(false);
-  };
+ handleDrawerClose = () => {
+  this.setState({
+    ...this.state,
+      open:false
+    });
+};
 
-  const handleLogout = () => {
-    if (getStorage()) {
-      setStorage()
-      props.history.push('/');
-    } else {
-      props.history.push('/')
-    }
+ handleLogout = () => {
+  if (getStorage()) {
+    setStorage()
+    this.props.history.push('/');
+  } else {
+    this.props.history.push('/')
   }
+}
 
-  const onListItemClick=(event,index,path)=>{
-     setState({...state,
-      selectedMenuIndex:index
-    })
-    // props.history.push(path)
-  }
+onListItemClick=(event,index,path)=>{
+   this.setState({
+     ...this.state,
+    selectedMenuIndex:index
+  })
+  // props.history.push(path)
+}
+
+
+
+  render(){
+  const {classes,theme}=this.props;
 
   const userProfileDetails = {
-    userName: props.UserProfileDataList ? props.UserProfileDataList.first_name +
+    userName: this.props.UserProfileDataList ? this.props.UserProfileDataList.first_name +
       ' ' +
-      props.UserProfileDataList.last_name
+      this.props.UserProfileDataList.last_name
       : '',
-    email: props.UserProfileDataList
-      ? props.UserProfileDataList.email
+    email: this.props.UserProfileDataList
+      ? this.props.UserProfileDataList.email
       : '',
-    userRole: props.UserProfileDataList ? props.UserProfileDataList.role
+    userRole: this.props.UserProfileDataList ? this.props.UserProfileDataList.role
       : '',
     iconUrl: '',
     onClick: function onClick(e) { },
@@ -147,14 +163,19 @@ function DashboardLayout(props) {
       editProfile: false
     }
   };
-console.log(props)
+     
+
+ 
+
+  
+console.log(this.props)
   return (
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
         position="fixed"
         className={clsx(classes.appBar, {
-          [classes.appBarShift]: open,
+          [classes.appBarShift]: this.state.open,
         })}
       >
         <Toolbar>
@@ -162,10 +183,10 @@ console.log(props)
             <IconButton
               color="inherit"
               aria-label="open drawer"
-              onClick={handleDrawerOpen}
+              onClick={()=>this.handleDrawerOpen()}
               edge="start"
               className={clsx(classes.menuButton, {
-                [classes.hide]: open,
+                [classes.hide]: this.state.open,
               })}
             >
               <MenuIcon />
@@ -179,7 +200,7 @@ console.log(props)
           <Grid container justify="flex-end">
             <UserProfile
               UserCard={userProfileDetails}
-              onLogoutClick={() => handleLogout()}
+              onLogoutClick={(e) => this.handleLogout(e)}
             />
           </Grid>
         </Toolbar>
@@ -187,18 +208,18 @@ console.log(props)
       <Drawer
         variant="permanent"
         className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
+          [classes.drawerOpen]: this.state.open,
+          [classes.drawerClose]: !this.state.open,
         })}
         classes={{
           paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
+            [classes.drawerOpen]: this.state.open,
+            [classes.drawerClose]: !this.state.open,
           }),
         }}
       >
         <div className={classes.toolbar}>
-          <IconButton onClick={handleDrawerClose}>
+          <IconButton onClick={(e)=>this.handleDrawerClose(e)}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <ChevronLeftIcon />}
           </IconButton>
         </div>
@@ -209,8 +230,8 @@ console.log(props)
           <Tooltip title={menu.label} aria-label={menu.label} key={menu.label}>
             <ListItem button 
               key={menu.label} 
-              selected={state.selectedMenuIndex === menu.id}
-              onClick={(event)=>{onListItemClick(event, menu.id,menu.to)}}
+              selected={this.state.selectedMenuIndex === menu.id}
+              onClick={(event)=>{this.onListItemClick(event, menu.id,menu.to)}}
             >
               <Link
                 to={{
@@ -221,8 +242,16 @@ console.log(props)
 
                 <ListItemIcon>{<menu.icon />}</ListItemIcon>
               </Link>
+              <Link
+                to={{
+                  pathname: menu.to,
+                  state: { activeIndex: menu.id }
+                }}
+                className={classes.menuName}
+              >
               <ListItemText primary={menu.label}  />
-             
+              </Link>
+              
             </ListItem>
           </Tooltip>
         ))}
@@ -230,10 +259,11 @@ console.log(props)
       </Drawer>
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        {props.children}
+        {this.props.children}
       </main>
     </div>
-  );
+  ); 
+  }
 }
 
 const mapStateToProps = ({
@@ -246,8 +276,11 @@ const mapDispatchToProps = {
   getAllUserDetail,
 };
 
-export default withRouter( memo(connect(
-      mapStateToProps,
-      mapDispatchToProps
-    )(DashboardLayout)));
-
+export default withRouter(
+  withStyles(styles, { withTheme: true })(
+      connect(
+          mapStateToProps,
+          mapDispatchToProps
+      )(DashboardLayout)
+  )
+);
