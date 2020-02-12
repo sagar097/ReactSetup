@@ -1,15 +1,25 @@
 import React,{memo} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
-import {Typography,Button,CardMedia,CardContent,CardActionArea,CardActions,Card,Grid} from '@material-ui/core';
+import {Typography,Button,CardMedia,CardContent,CardActionArea,CardActions,
+  Card,Grid,Tooltip,Fab} from '@material-ui/core';
 import { API_GATEWAY_URL } from '../../helper/constants';
 import Dialog from './DialogComponent';
+import {Edit} from '@material-ui/icons';
+
 const useStyles = makeStyles({
   card: {
-    maxWidth: 250,
+    maxWidth: 270,
   },
   media: {
     height: 150,
   },
+  fabButton:{
+    backgroundColor:'#01579b',
+    color:'white',
+    '&:hover':{
+      backgroundColor:'#01579b'
+    }
+  }
 });
 
  function TechCard1(props) {
@@ -40,6 +50,11 @@ const useStyles = makeStyles({
                       Start Exam
                     </Button>
                        <Dialog title={card.subjectName} description={card.subjectDescription}/>
+                <Tooltip title="Edit Details" aria-label="Edit">
+                  <Fab  size="small"  className={classes.fabButton}>
+                      <Edit  fontSize="small" />  
+                  </Fab>
+                </Tooltip>
                 </CardActions>
                 </Card>
             </Grid>  )
