@@ -12,8 +12,6 @@ import { dashboardLayout } from '../layouts/DashboardLayout';
 import { errorLayout } from '../layouts/ErrorLayout';
 import publicLayout from '../layouts/PublicLayout/PublicLayout';
 import {withRouter} from 'react-router';
-import Demo from '../components/Demo';
-import TechCard from '../components/TechCards/TechCard';
 
 
 const NotFoundPage = Loader(() =>
@@ -28,8 +26,8 @@ const SignUp = Loader(() =>
     import(/* webpackChunkName: "NotFoundPage" */ '../containers/Signup/Signup')
 );
 
-const Customer = Loader(() =>
-    import(/* webpackChunkName: "NotFoundPage" */ '../components/Customer/Customers')
+const TechCard = Loader(() =>
+    import(/* webpackChunkName: "NotFoundPage" */ '../containers/Technology/Technology')
 );
 
 // const NoAccess = Loader(() =>
@@ -105,7 +103,7 @@ const   Routers = store => {
                         store={store}
                     /> */}
 
-                      <AppRoute
+                    <AppRoute
                         exact
                         path='/dashboard'
                         component={TechCard}
@@ -113,10 +111,11 @@ const   Routers = store => {
                         layout={dashboardLayout}
                         store={store}
                     />
+
                      <AppRoute
                         exact
                         path='/technology'
-                        component={Customer}
+                        component={()=>(<div>Tech</div>)}
                         requireAuth={auth}
                         layout={dashboardLayout}
                         store={store}

@@ -1,11 +1,13 @@
 import { combineReducers } from 'redux';
 import { connectRouter } from 'connected-react-router';
 import userDataReducer from './reducers/userProfileReducer';
+import technologyDataReducer from './reducers/technologyListReducer'
 
 export default history => {
     const reducer = combineReducers({
         router: connectRouter(history),
-        UserProfileData:userDataReducer
+        UserProfileData:userDataReducer,
+        TechnologyListData:technologyDataReducer
     });
 
     return (state, action) => {

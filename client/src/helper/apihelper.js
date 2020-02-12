@@ -13,7 +13,9 @@ Object.defineProperty(APIHelper.prototype, 'Resources', {
         return {
             UserLogin : this.Url + 'user/login' ,
             SignUp : this.Url + 'user/signup',
-            UserProfile: this.Url + 'user/userinfo'
+            UserProfile: this.Url + 'user/userinfo',
+            TechnologyList:this.Url + 'subjects/subjectList',
+            QuestionAnswer:this.Url + 'questions/exams'
         };
     },
     readable: true

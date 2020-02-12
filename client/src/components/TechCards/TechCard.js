@@ -1,48 +1,45 @@
-import React from 'react';
+import React,{memo} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import {Typography,Button,CardMedia,CardContent,CardActionArea,CardActions,Card,Grid} from '@material-ui/core';
-import Reactjs from '../../assets/images/png/Reactjs.png';
-import Nodejs from '../../assets/images/png/Nodejs.png';
-import js from '../../assets/images/png/Javascript.png';
+import { API_GATEWAY_URL } from '../../helper/constants';
+import Dialog from './DialogComponent';
 const useStyles = makeStyles({
   card: {
     maxWidth: 250,
   },
   media: {
-    height: 90,
+    height: 150,
   },
 });
 
- function TechCard(props) {
+ function TechCard1(props) {
   const classes = useStyles();
-
+  const {subjectList } = props;
   return (
-   <Grid container>
-    {props.technology&&props.technology.map((card,index)=>(
-            <Grid item xs={4} key={card.id}>
-            <Card className={classes.card}>
+   <Grid container spacing={1}>
+    {subjectList&&subjectList.map((card,index)=>(
+            <Grid item  xs={12} md={4} sm={6}  key={card.id} key={card._id}>
+             <Card className={classes.card}>
                 <CardActionArea>
                     <CardMedia
                     className={classes.media}
-                    image={card.img}
+                    image={API_GATEWAY_URL + card.subjectImage}
                     title="Contemplative Reptile"
                     />
                     <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                        {card.title}
+                        {card.subjectName}
                     </Typography>
                     <Typography variant="body2" color="textSecondary" component="p">
-                       {card.description}
+                       {card.examTime}:00 Hours Score: 0%
                     </Typography>
                     </CardContent>
                 </CardActionArea>
                 <CardActions>
                     <Button size="small" color="primary">
-                      Share
+                      Start Exam
                     </Button>
-                    <Button size="small" color="primary">
-                      Learn More
-                    </Button>
+                       <Dialog title={card.subjectName} description={card.subjectDescription}/>
                 </CardActions>
                 </Card>
             </Grid>  )
@@ -50,26 +47,26 @@ const useStyles = makeStyles({
     </Grid>
   );
 }
-TechCard.defaultProps={
-  technology:[
+TechCard1.defaultProps={
+    subjectList:[
       {
           id:1,
-          title :'Javascript',
+          subjectName :'Javascript',
           description:"Sample Test For Javascript",
-          img : js
+          img : 'js'
       },
       {
          id:2,
-         title : 'Reactjs',
+         subjectName : 'Reactjs',
          description : "Sample Test For React-Js" ,
-         img :  Reactjs
+         img :  'Reactjs'
       },
       { 
           id:3,
-          title : 'Nodejs',
+          subjectName : 'Nodejs',
           description : "Sample Test For Node-Js",
-          img : Nodejs
+          img : 'Nodejs'
       }
   ]
 }
-export default TechCard;
+export default memo(TechCard1);
