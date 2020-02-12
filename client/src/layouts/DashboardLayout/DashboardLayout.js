@@ -127,7 +127,8 @@ handleDrawerOpen = () => {
 
  handleLogout = () => {
   if (getStorage()) {
-    setStorage()
+    setStorage();
+    localStorage.clear();
     this.props.history.push('/');
   } else {
     this.props.history.push('/')
